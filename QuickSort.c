@@ -1,66 +1,50 @@
-#include &lt;stdio.h&gt;
-#include &lt;pthread.h&gt;
-#include &lt;unistd.h&gt;
-#define N 5 // Number of philosophers
-pthread_mutex_t forks[N]; // One mutex per fork
-pthread_t philosophers[N];
-void* philosopher(void* num)
-{
-int id = *(int*)num;
-int left = id; // left fork index
-int right = (id + 1) % N; // right fork index
-while (1)
-{
-printf(&quot;Philosopher %d is thinking.\n&quot;, id);
-sleep(1); // Thinking
-// To avoid deadlock, philosophers with even id pick left, then right,
-// odd id pick right, then left.
-if (id % 2 == 0)
-{
-// Pick up left fork
-pthread_mutex_lock(&amp;forks[left]);
-printf(&quot;Philosopher %d picked up left fork %d.\n&quot;, id, left);
-// Pick up right fork
-pthread_mutex_lock(&amp;forks[right]);
-printf(&quot;Philosopher %d picked up right fork %d.\n&quot;, id, right);
-}
-else
-{
-// Pick up right fork
-pthread_mutex_lock(&amp;forks[right]);
-printf(&quot;Philosopher %d picked up right fork %d.\n&quot;, id, right);
+#include<stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
-// Pick up left fork
-pthread_mutex_lock(&amp;forks[left]);
-printf(&quot;Philosopher %d picked up left fork %d.\n&quot;, id, left);
+void swap(int a[], int i,int j){
+    int t=a[i];
+    a[i]=a[j];
+    a[j]=t;
 }
-// Eating
-printf(&quot;Philosopher %d is eating.\n&quot;, id);
-sleep(2);
-// Put down forks
-pthread_mutex_unlock(&amp;forks[left]);
-pthread_mutex_unlock(&amp;forks[right]);
-printf(&quot;Philosopher %d put down forks %d and %d.\n&quot;, id, left, right);
+
+int sort(int a[],int st,int end){
+    int p=a[st],i=st,j=end;
+    while (1) {
+        while (i <= end && a[i] <= p) i++;
+        while (j >= st && a[j] > p) j--;
+
+        if (i >= j) break;
+        swap(a, i, j);
+    }
+    swap(a,st,j);
+    return j;
 }
-return NULL;
+
+void quickSort(int a[],int st,int end ){
+    if(st >= end) return;
+
+    int mid = sort(a,st,end);
+    quickSort(a,st,mid-1);
+    quickSort(a,mid+1,end);
 }
-int main()
-{
-int i;
-int ids[N];
-// Initialize forks (mutexes)
-for (i = 0; i &lt; N; i++)
-{
-pthread_mutex_init(&amp;forks[i], NULL);
-ids[i] = i;
-}
-// Create philosopher threads
-for (i = 0; i &lt; N; i++)
-{
-pthread_create(&amp;philosophers[i], NULL, philosopher, &amp;ids[i]);
-}
-// Join threads (will never happen here, but good practice)
-for (i = 0; i &lt; N; i++)
-{
-pthread_join(philosophers[i], NULL);
+
+int main(){
+    int n;
+    printf("Enter size :");
+    scanf("%d",&n);
+    int a[n];
+    for(int i=0; i<n;i++)
+        a[i]=rand();
+        // scanf("%d",&a[i]);
+
+    double stTime =clock();
+    quickSort(a,0,n-1);
+    double endTime =clock();
+    double t= (endTime -stTime)/CLOCKS_PER_SEC;
+    //printf("Sorted Array :\n");
+    // for(int i=0;i<n;i++)    
+    //     printf("%d\t",a[i]);
+    printf("Time Taken: %.4f ms",t*1000);
+    return 0;
 }
