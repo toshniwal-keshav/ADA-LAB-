@@ -34,6 +34,7 @@ int main(){
     printf("Enter size :");
     scanf("%d",&n);
     int a[n];
+    // printf("Enter %d items :\n", n);
     for(int i=0; i<n;i++)
         a[i]=rand();
         // scanf("%d",&a[i]);
@@ -42,9 +43,9 @@ int main(){
     quickSort(a,0,n-1);
     double endTime =clock();
     double t= (endTime -stTime)/CLOCKS_PER_SEC;
-    //printf("Sorted Array :\n");
+    // printf("Sorted Array :\n");
     // for(int i=0;i<n;i++)    
-    //     printf("%d\t",a[i]);
-    printf("Time Taken: %.4f ms",t*1000);
+        // printf("%d\t",a[i]);
+    printf("\nTime Taken: %.4f ms",t*1000);
     return 0;
 }
