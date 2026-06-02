@@ -43,17 +43,17 @@ int main() {
         printf("Memory allocation failed.\n");
         return 1;
     }
-    printf("Enter %d integer elements:\n", n);
+    // printf("Enter %d integer elements:\n", n);
     for (int i = 0; i < n; i++)
-        scanf("%d", &arr[i]);
+        arr[i]=rand();
+        // scanf("%d", &arr[i]);
     clock_t start = clock();
     heapSort(arr, n);
     clock_t end = clock();
     double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("\nSorted elements:\n");
-    for (int i = 0; i < n; i++)
-        printf("%d ", arr[i]);
-
+    // printf("\nSorted elements:\n");
+    // for (int i = 0; i < n; i++)
+    //     printf("%d ", arr[i]);
     printf("\n\nTime taken: %.3f ms\n", time_taken*1000);
     return 0;
 }
