@@ -1,48 +1,59 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
-void heapify(int arr[], int n, int i){
-    int lar =i;
-    int left =2*i +1;
-    int right= 2*i +2;
+void heapify(int arr[], int n, int i) {
+    int lar = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
 
-    if(left<n && arr[left]>arr[lar]) lar=left;
-    if(right<n && arr[right]>arr[lar]) lar=right;
-
-    if(lar != i){
+    if (left < n && arr[left] > arr[lar])
+        lar = left;
+    if (right < n && arr[right] > arr[lar])
+        lar = right;
+    if (lar != i) {
         int t = arr[i];
         arr[i] = arr[lar];
         arr[lar] = t;
-
         heapify(arr, n, lar);
     }
 }
 
-void heapSort(int arr[] , int n){
-    for(int i=(n/2) -1;i>=0;i--) heapify(arr, n, i);
-    for(int i=n-1;i>0;i++){
-        int t=arr[0];
+void heapSort(int arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+    for (int i = n - 1; i > 0; i--) {
+        int t = arr[0];
         arr[0] = arr[i];
         arr[i] = t;
         heapify(arr, i, 0);
     }
 }
 
-int main(){
+int main() {
     int n;
     printf("Enter number of elements: ");
     scanf("%d", &n);
-    int arr[n];
+    if (n <= 0) {
+        printf("Invalid number of elements.\n");
+        return 1;
+    }
+    int *arr = (int *)malloc(n * sizeof(int));
+    if (arr == NULL) {
+        printf("Memory allocation failed.\n");
+        return 1;
+    }
     printf("Enter %d integer elements:\n", n);
     for (int i = 0; i < n; i++)
         scanf("%d", &arr[i]);
     clock_t start = clock();
     heapSort(arr, n);
     clock_t end = clock();
-
-    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+    double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
     printf("\nSorted elements:\n");
     for (int i = 0; i < n; i++)
         printf("%d ", arr[i]);
-    printf("\n\nTime taken: %f seconds\n", time_taken);
+
+    printf("\n\nTime taken: %.3f ms\n", time_taken*1000);
+    return 0;
 }
