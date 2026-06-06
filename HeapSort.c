@@ -34,15 +34,7 @@ int main() {
     int n;
     printf("Enter number of elements: ");
     scanf("%d", &n);
-    if (n <= 0) {
-        printf("Invalid number of elements.\n");
-        return 1;
-    }
-    int *arr = (int *)malloc(n * sizeof(int));
-    if (arr == NULL) {
-        printf("Memory allocation failed.\n");
-        return 1;
-    }
+    int arr[n];
     // printf("Enter %d integer elements:\n", n);
     for (int i = 0; i < n; i++)
         arr[i]=rand();
