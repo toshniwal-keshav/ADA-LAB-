@@ -1,3 +1,6 @@
+//k- handles cols
+//i- handles rows 
+
 #include <stdio.h>
 #include <stdlib.h>
 
